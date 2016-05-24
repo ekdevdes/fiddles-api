@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fiddles API Documentation</title>
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+  <body><h1 id="fiddles-br-small-base-url-http-ek-alphaschildren-org-fiddles-api-v3-small-">Fiddles <br> <h6><strong>Base URL: </strong>http://api.fiddlesapp.co/v2/</h6></h1>
+<h2 id="response-format">Response Format</h2>
+<p>All API possible responses fall under two categories, they are listed below.</p>
+<p><strong>NOTE: </strong> The response code of successful requests will always be 0 and the response code of requests whose endpoints do not successfully execute is any number greater than 0. The specific number tells you what kind of error occured.</p>
+<h3 id="success">Success</h3>
+<p>The JSON payload of the response of all API calls whose endpoints are successfully executed without error will look as follows.</p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"meta"</span> : {
+    <span class="hljs-string">"resp_code"</span> : <span class="hljs-number">0</span>,
+    <span class="hljs-string">"resp_msg"</span> : <span class="hljs-string">""</span>, // optional, a short text response from the API endpoint
+    <span class="hljs-string">"get_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>,
+      ....
+    },
+    <span class="hljs-string">"post_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>, // Please note, passwords passed <span class="hljs-keyword">in</span> via the HTTP POST method are the only POST parameter that will not be returned
+      ....
+    }
+  },
+  <span class="hljs-string">"resp"</span> : {
+    <span class="hljs-keyword">...</span> optional additional response information <span class="hljs-keyword">...</span>
+  }
+}
+</code></pre>
+<h3 id="error">Error</h3>
+<p>The JSON payload of the response of all API calls whose endpoints are not successfully executed without error will look as follows.</p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"meta"</span> : {
+    <span class="hljs-string">"resp_code"</span> : <span class="hljs-number">1</span>, // <span class="hljs-type">any</span> number greater than <span class="hljs-number">0</span>, the specific number tells the kind <span class="hljs-keyword">of</span> error that occured
+    <span class="hljs-string">"err_msg"</span> : <span class="hljs-string">""</span>, // why the error occured
+    <span class="hljs-string">"get_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>,
+      ....
+    },
+    <span class="hljs-string">"post_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>, // <span class="hljs-type">Please</span> note, passwords passed <span class="hljs-keyword">in</span> via the <span class="hljs-type">HTTP</span> <span class="hljs-type">POST</span> <span class="hljs-keyword">method</span> are the only <span class="hljs-type">POST</span> parameter that will <span class="hljs-keyword">not</span> be returned
+      ....
+    }
+  },
+  <span class="hljs-string">"resp"</span> : {
+    ... optional additonal response information ....
+  }
+}
+</code></pre>
+<h2 id="endpoints">Endpoints</h2>
+<h3 id="parse">parse</h3>
+<p>Turns pre-processor code into appropriate HTML, CSS or JS language and creates <code>{{slug}}.html</code> on the server and populates it with the parsed contents of the fiddle. Updates the file on the server if it already exists.</p>
+<p><small><strong><em>GET PARAMETERS</em></strong></small></p>
+<p><small><em>REQUIRED slug</em></small> the five character unique identifier of the fiddle to parse</p>
+<p><small><em>REQUIRED lhtml</em></small> html language of fiddle to parse<small><strong>POSSIBLE OPTIONS</strong></small></p>
+<ul>
+<li>html</li>
+<li>haml</li>
+<li>markdown</li>
+<li>md</li>
+</ul>
+<p><small><em>REQUIRED lcss</em></small> css language of fiddle to parse<small><strong>POSSIBLE OPTIONS</strong></small></p>
+<ul>
+<li>css</li>
+<li>less</li>
+<li>sass</li>
+<li>scss</li>
+</ul>
+<p><small><em>REQUIRED ljs</em></small> js language of fiddle to parse<small><strong>POSSIBLE OPTIONS</strong></small></p>
+<ul>
+<li>js</li>
+<li>javascript</li>
+<li>cs</li>
+<li>coffeescript</li>
+</ul>
+<p><small><strong><em>POST PARAMETERS</em></strong></small></p>
+<p><small><em>REQUIRED html</em></small> html code of fiddle to parse</p>
+<p><small><em>REQUIRED css</em></small> css code of fiddle to parse</p>
+<p><small><em>REQUIRED js</em></small> js code of fiddle to parse</p>
+<p><small><em>REQUIRED opts</em></small> a JSON payload of other fiddle options</p>
+<pre><code class="lang-js"><span class="xml"></span><span class="hljs-expression">{
+  <span class="hljs-string">"name"</span> : <span class="hljs-string">"iOS 7 Style Menu"</span>, /<span class="hljs-end-block">/ <span class="hljs-keyword">default</span> </span><span class="hljs-string">"Untitled"</span>
+  <span class="hljs-string">"minify_css"</span> : <span class="hljs-string">"true"</span>, /<span class="hljs-end-block">/ <span class="hljs-keyword">default</span> </span><span class="hljs-string">"false"</span>
+  <span class="hljs-string">"normalize_css"</span> : <span class="hljs-string">"true"</span>, /<span class="hljs-end-block">/ <span class="hljs-keyword">default</span> </span><span class="hljs-string">"false"</span>
+  <span class="hljs-string">"reset_css"</span> : <span class="hljs-string">"true"</span>, /<span class="hljs-end-block">/ <span class="hljs-keyword">default</span> </span><span class="hljs-string">"false"</span>
+  <span class="hljs-string">"prefix_free"</span> : <span class="hljs-string">"true"</span>, /<span class="hljs-end-block">/ <span class="hljs-keyword">default</span> </span><span class="hljs-string">"false"</span>
+  <span class="hljs-string">"library"</span> : <span class="hljs-string">"jquery"</span>, /<span class="hljs-end-block">/ <span class="hljs-keyword">default</span> </span><span class="hljs-string">"none"</span><span class="hljs-variable">.</span> <span class="hljs-variable">Other</span> <span class="hljs-variable">options</span>: <span class="hljs-variable">jquery</span>, <span class="hljs-variable">prototype</span>, <span class="hljs-variable">mootools</span>
+  <span class="hljs-string">"resources"</span> : { /<span class="hljs-end-block">/ by <span class="hljs-keyword">default</span> no resources are included</span>
+    <span class="hljs-string">"js"</span> : [ /<span class="hljs-end-block">/ empty by <span class="hljs-keyword">default</span></span>
+      <span class="hljs-string">"http://example.com/source.js"</span>,
+      <span class="hljs-string">"http://code.jquery.com/jquery-latest.js"</span>
+    ],
+    <span class="hljs-string">"css"</span> : [ /<span class="hljs-end-block">/ empty by <span class="hljs-keyword">default</span></span>
+      <span class="hljs-string">"http://example.com/lib.css"</span>,
+      <span class="hljs-string">"http://twitter.com/bootstrap/latest.css"</span>
+    ]
+  }</span><span class="xml">
+}</span>
+</code></pre>
+<p><small style="color:red;"><strong>ERROR CODES</strong></small></p>
+<p><span style="color:red;"><b>1</b> translation not supported </span><br><span style="color:red;"><b>2</b> syntax error </span><br><span style="color:red;"><b>3</b> parsing error <strong>NOTE: Can be combined to describe multiple parsing errors, see below</strong></span><br>&nbsp;&nbsp;&nbsp;<span style="color:red;"><b>3.1</b> haml parsing error </span><br>&nbsp;&nbsp;&nbsp;<span style="color:red;"><b>3.2</b> less parsing error </span><br>&nbsp;&nbsp;&nbsp;<span style="color:red;"><b>3.3</b> sass/scss parsing error </span><br>&nbsp;&nbsp;&nbsp;<span style="color:red;"><b>3.4</b> coffeescript parsing error </span></p>
+<p><small><strong>EXAMPLE RESPONSE</strong></small></p>
+<p><small><strong>SUCCESS</strong></small></p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-keyword">...</span> meta <span class="hljs-keyword">...</span>
+  <span class="hljs-string">"resp"</span> : {
+    <span class="hljs-string">"url"</span> : <span class="hljs-string">"http://ek.alphaschildren.org/fiddles/abc123.html"</span>,
+    <span class="hljs-string">"result"</span> : {
+      <span class="hljs-string">"html"</span> : <span class="hljs-string">"... code ..."</span>,
+      <span class="hljs-string">"css"</span> : <span class="hljs-string">"... code ...."</span>,
+      <span class="hljs-string">"js"</span> : <span class="hljs-string">"... code ..."</span>,
+      <span class="hljs-string">"full_html"</span> : <span class="hljs-string">".... contents of {{slug}}.html file ..."</span>
+    }
+  }
+}
+</code></pre>
+<p><small style="color:red;"><strong>ERROR</strong></small></p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"meta"</span> : {
+    <span class="hljs-string">"resp_code"</span> : <span class="hljs-string">"3.1, 3.2"</span>, // <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> <span class="hljs-number">3</span>.<span class="hljs-number">1</span>, <span class="hljs-number">3</span>.<span class="hljs-number">2</span>, <span class="hljs-number">3</span>.<span class="hljs-number">3</span>, <span class="hljs-number">3</span>.<span class="hljs-number">4</span>
+    <span class="hljs-string">"err_msg"</span> : <span class="hljs-string">"haml parsing error, less parsing error"</span>, // why the error occured
+    <span class="hljs-string">"get_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>,
+      ....
+    },
+    <span class="hljs-string">"post_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>, // <span class="hljs-type">Please</span> note, passwords passed <span class="hljs-keyword">in</span> via the <span class="hljs-type">HTTP</span> <span class="hljs-type">POST</span> <span class="hljs-keyword">method</span> are the only <span class="hljs-type">POST</span> parameter that will <span class="hljs-keyword">not</span> be returned
+      ....
+    }
+  },
+  <span class="hljs-string">"resp"</span> : {
+    <span class="hljs-string">"url"</span> : <span class="hljs-string">"http://ek.alphaschildren.org/fiddles/abc123.html"</span>,
+    <span class="hljs-string">"haml"</span> : {
+      <span class="hljs-string">"errs"</span> : {
+        <span class="hljs-string">"Unexpected '%' on line 5"</span>,
+        <span class="hljs-string">"Unknown Character '&lt;' on line 95"</span>
+      },
+      <span class="hljs-string">"count"</span> : <span class="hljs-number">2</span>
+    },
+    <span class="hljs-string">"less"</span> : {
+      <span class="hljs-string">"errs"</span> : {
+        <span class="hljs-string">"Unexpected '{' on line 5"</span>,
+      },
+      <span class="hljs-string">"count"</span> : <span class="hljs-number">1</span>
+    }
+  }
+}
+</code></pre>
+<h3 id="authenticate">authenticate</h3>
+<p>verifies the credentials of the user for the given service</p>
+<p><small><strong><em>GET PARAMETERS</em></strong></small></p>
+<p><small><em>REQUIRED service</em></small> service which the account credentials to verify are tied to<small><strong>POSSIBLE OPTIONS</strong></small></p>
+<ul>
+<li>cloudapp</li>
+<li>github</li>
+</ul>
+<p><small><strong><em>POST PARAMETERS</em></strong></small></p>
+<p><small><em>REQUIRED username</em></small> email address or username of account credentials are tied to<br><br></p>
+<p><small><em>REQUIRED pw</em></small> Password of account credentials are tied to<br><br></p>
+<p><small style="color:red;"><strong>ERROR CODES</strong></small></p>
+<p><span style="color:red;"><b>4</b> invalid credentials </span><br><br></p>
+<p><small><strong>EXAMPLE RESPONSE</strong></small></p>
+<p><small><strong>SUCCESS</strong></small></p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"meta"</span> : {
+    <span class="hljs-string">"resp_code"</span> : <span class="hljs-number">0</span>,
+    <span class="hljs-string">"resp_msg"</span> : <span class="hljs-string">"valid credentials"</span>, // optional, a short text response <span class="hljs-keyword">from</span> the <span class="hljs-type">API</span> endpoint
+    <span class="hljs-string">"get_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>,
+      ....
+    },
+    <span class="hljs-string">"post_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>, // <span class="hljs-type">Please</span> note, passwords passed <span class="hljs-keyword">in</span> via the <span class="hljs-type">HTTP</span> <span class="hljs-type">POST</span> <span class="hljs-keyword">method</span> are the only <span class="hljs-type">POST</span> parameter that will <span class="hljs-keyword">not</span> be returned
+      ....
+    }
+  },
+  <span class="hljs-string">"resp"</span> : {}
+}
+</code></pre>
+<p><small style="color:red;"><strong>ERROR</strong></small></p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"meta"</span> : {
+    <span class="hljs-string">"resp_code"</span> : <span class="hljs-string">"4"</span>, // <span class="hljs-type">Only</span> <span class="hljs-number">4</span>
+    <span class="hljs-string">"err_msg"</span> : <span class="hljs-string">"invalid credentials"</span>, // why the error occured
+    <span class="hljs-string">"get_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>,
+      ....
+    },
+    <span class="hljs-string">"post_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>, // <span class="hljs-type">Please</span> note, passwords passed <span class="hljs-keyword">in</span> via the <span class="hljs-type">HTTP</span> <span class="hljs-type">POST</span> <span class="hljs-keyword">method</span> are the only <span class="hljs-type">POST</span> parameter that will <span class="hljs-keyword">not</span> be returned
+      ....
+    }
+  },
+  <span class="hljs-string">"resp"</span> : {}
+}
+</code></pre>
+<h3 id="post">post</h3>
+<p>uploads the file the given service</p>
+<p><small><strong><em>GET PARAMETERS</em></strong></small></p>
+<p><small><em>REQUIRED service</em></small> service to upload file to. File will be uploaded in form <code>{{slug}}.html</code><small><strong>POSSIBLE OPTIONS</strong></small></p>
+<ul>
+<li>cloudapp</li>
+<li>github</li>
+</ul>
+<p><small><em>REQUIRED slug</em></small> the five character unique identifier of the fiddle to post to service in question</p>
+<p><small><strong><em>POST PARAMETERS</em></strong></small></p>
+<p><small><em>REQUIRED username</em></small> email address or username of account credentials are tied to</p>
+<p><small><em>REQUIRED pw</em></small> Password of account credentials are tied to</p>
+<p><small style="color:red;"><strong>ERROR CODES</strong></small></p>
+<p><span style="color:red;"><b>4</b> invalid credentials </span><br><span style="color:red;"><b>5</b> file is corrupt </span><br><span style="color:red;"><b>6</b> file is doesn&#39;t exist </span><br><span style="color:red;"><b>7</b> file is too large </span><br></p>
+<p><small><strong>EXAMPLE RESPONSE</strong></small></p>
+<p><small><strong>SUCCESS</strong></small></p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"meta"</span> : {
+    <span class="hljs-string">"resp_code"</span> : <span class="hljs-number">0</span>,
+    <span class="hljs-string">"resp_msg"</span> : <span class="hljs-string">""</span>, // optional, a short text response <span class="hljs-keyword">from</span> the <span class="hljs-type">API</span> endpoint
+    <span class="hljs-string">"get_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>,
+      ....
+    },
+    <span class="hljs-string">"post_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>, // <span class="hljs-type">Please</span> note, passwords passed <span class="hljs-keyword">in</span> via the <span class="hljs-type">HTTP</span> <span class="hljs-type">POST</span> <span class="hljs-keyword">method</span> are the only <span class="hljs-type">POST</span> parameter that will <span class="hljs-keyword">not</span> be returned
+      ....
+    }
+  },
+  <span class="hljs-string">"resp"</span> : {
+    <span class="hljs-string">"url"</span> : <span class="hljs-string">"http://cloudapp.com/code/abc123.html"</span>
+  }
+}
+</code></pre>
+<p><small style="color:red;"><strong>ERROR</strong></small></p>
+<pre><code class="lang-javascript">{
+  <span class="hljs-string">"meta"</span> : {
+    <span class="hljs-string">"resp_code"</span> : <span class="hljs-string">"7"</span>, // <span class="hljs-number">4</span> <span class="hljs-keyword">or</span> <span class="hljs-number">5</span> <span class="hljs-keyword">or</span> <span class="hljs-number">6</span> <span class="hljs-keyword">or</span> <span class="hljs-number">7</span>
+    <span class="hljs-string">"err_msg"</span> : <span class="hljs-string">"file is too large"</span>, // why the error occured
+    <span class="hljs-string">"get_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>,
+      ....
+    },
+    <span class="hljs-string">"post_params"</span> : {
+      <span class="hljs-string">"key"</span> : <span class="hljs-string">"value"</span>, // <span class="hljs-type">Please</span> note, passwords passed <span class="hljs-keyword">in</span> via the <span class="hljs-type">HTTP</span> <span class="hljs-type">POST</span> <span class="hljs-keyword">method</span> are the only <span class="hljs-type">POST</span> parameter that will <span class="hljs-keyword">not</span> be returned
+      ....
+    }
+  },
+  <span class="hljs-string">"resp"</span> : {}
+}
+</code></pre>
+
+  </body>
+</html>

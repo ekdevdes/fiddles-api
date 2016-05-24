@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Fiddles API Docs</title>
+  <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+<h1>Fiddles API Docs</h1>
+<p class="base-url"><strong>Base URL</strong>: http://fiddlesapp.co/api/
+<br>
+<br>
+<h2 class="endpts">Endpoints</h2>
+
+<h3>translate/</h3>
+<p>Runs the given code through the appropriate preprocessor and returns the result</p>
+<br>
+
+<p><strong>GET</strong> Params</p>
+<br>
+<p><strong>REQUIRED</strong> <strong>html_lang</strong>
+HTML,Markdown or HAML</p>
+
+<p><strong>REQUIRED</strong> <strong>css_lang</strong>
+CSS, SASS or LESS</p>
+
+<p><strong>REQUIRED</strong> <strong>js_lang</strong>
+JS or CoffeeScript</p>
+
+<br>
+<p><strong>POST</strong> params
+<br>
+<br>
+<strong>html (optional)</strong> the HTML to be converted
+<br>
+<strong>css (optional)</strong> the CSS to converted
+<br>
+<strong>js (optional)</strong> the JS to converted</p>
+<br>
+<p><strong>Errors</strong></p>
+<p><strong>502</strong> Translation not supported</p>
+<p><strong>503</strong> Syntax Error</p>
+<p><strong>507</strong> Coffeescript parsing error</p>
+<br>
+
+<div class="resp">
+<p>http://fiddlesapp.co/api/translate/?html_lang=html&css_lang=sass&js_lang=coffeescript<span class="translate">Show Result</span></p>
+<div class="response translate">
+
+<p><strong>css</strong>=$blue:blue;p{color:$blue;}&<strong>js</strong>=alert 'hello'</p>
+
+<pre>
+<code>
+{
+  "translated_css": "p {\n  color: blue;\n}",
+  "translated_js": "(function() {\n\n  alert('hello');\n\n}).call(this);",
+  "translated_html": null
+}
+</code>
+</pre>
+</div>
+<div>
+<br/>
+
+<h3>minify_css/</h3>
+<p>minifies the CSS specified by <b>code</b></p>
+<br>
+
+<p><strong>POST</strong> params</p>
+<br>
+
+<p><strong>REQUIRED</strong> <strong>code</strong> The CSS to be minified</p>
+<br>
+
+<div class="resp">
+<p>http://fiddlesapp.co/api/minify_css/<span class="minify-css">Show Result</span></p>
+<div class="response minify-css">
+
+<p><strong>code</strong>=.pictos{
+    font-family: 'Pictos',Helvetica,Arial,sans-serif;
+}
+
+body{
+	background:url('../img/noise.png');
+}
+
+#menu-outer {
+	height: 84px;
+}
+
+#menu-outer a{
+	font-family:"NillandRegular",Helvetica,Arial,sans-serif;
+	text-decoration:none;
+	color:black;
+}
+
+#menu-outer a:hover{
+	font-family:"NillandBold",Helvetica,Arial,sans-serif;
+	font-size:20px;
+	-webkit-transition: font 0.3s ease-out;    
+	transition: font 0.3s ease-out; 
+}</p>
+
+<pre>
+<code>
+{
+  "original_css": ".pictos{\n    font-family: 'Pictos',Helvetica,Arial,sans-serif;\n}\n\nbody{\n\tbackground:url('../img/noise.png');\n}\n\n#menu-outer {\n\theight: 84px;\n}\n\n#menu-outer a{\n\tfont-family:\"NillandRegular\",Helvetica,Arial,sans-serif;\n\ttext-decoration:none;\n\tcolor:black;\n}\n\n#menu-outer a:hover{\n\tfont-family:\"NillandBold\",Helvetica,Arial,sans-serif;\n\tfont-size:20px;\n\t-webkit-transition: font 0.3s ease-out;    \n\ttransition: font 0.3s ease-out; \n}",
+  "minified_css": "\".pictos{font-family:'Pictos',Helvetica,Arial,sans-serif}body{background:url('..\\/img\\/noise.png')}#menu-outer{height:84px}#menu-outer a{font-family:\\\"NillandRegular\\\",Helvetica,Arial,sans-serif;text-decoration:none;color:black}#menu-outer a:hover{font-family:\\\"NillandBold\\\",Helvetica,Arial,sans-serif;font-size:20px;-webkit-transition:font 0.3s ease-out;transition:font 0.3s ease-out}\""
+}
+</code>
+</pre>
+</div>
+<div>
+
+<h3>upload/</h3>
+<p>Uploads the file in the format "<strong>slug</strong>.<strong>ext</strong>" to <strong>service</strong></p>
+<br>
+<p><strong>GET</strong> params</p>
+<br>
+<p><strong>REQUIRED service</strong> the service to upload the file in the format of "<strong>slug</strong>.<strong>ext</strong>" to. The available options are: <strong>cloudapp</strong></p>
+<p><strong>REQUIRED email</strong> email address of the account to upload the files too.</p>
+<p><strong>REQUIRED pw</strong> the password of the account to upload the files too.</p>
+<p><strong>REQUIRED slug</strong> the fiddles slug</p>
+<p><strong>REQUIRED ext</strong> the files extension <strong>the available options are css,js,html,haml,md,scss,less,coffee</strong></p>
+
+<p><strong>Note: </strong> the <strong>url</strong> key in the resulting json is the CloudApp url of the file we are interested in.</p>
+
+<br>
+
+<div class="resp">
+<p>http://fiddlesapp.co/api/upload/?service=cloudapp&email=ethankr@comcast.net&pw=bobbymar&slug=abcd145&ext=html<span class="upload">Show Result</span></p>
+<div class="response upload">
+<pre>
+<code>
+{
+  "created_at": "2012-12-29T01:16:28Z",
+  "deleted_at": null,
+  "id": 25239621,
+  "item_type": "text",
+  "name": "abcd145.html",
+  "private": true,
+  "redirect_url": null,
+  "remote_url": "http://f.cl.ly/items/102d1R253i2A091I0T0o/abcd145.html",
+  "source": "Fiddles App",
+  "updated_at": "2012-12-29T01:16:28Z",
+  "view_counter": 0,
+  "href": "http://my.cl.ly/items/25239621",
+  "icon": "http://my.cld.me/images/item-types/text.png",
+  "subscribed": false,
+  "url": "http://cl.ly/code/132z212T2X0z",
+  "content_url": "http://cl.ly/code/132z212T2X0z/abcd145.css",
+  "download_url": "http://cl.ly/code/132z212T2X0z/download/abcd145.html",
+  "last_viewed_at": null,
+  "gauge_id": null
+}
+</code>
+</pre>
+</div>
+<div>
+
+<h2><strong>file</strong></h2>
+
+<h3>file/create/</h3>
+<p>creates a fiddle on the server using the file format "<b>slug</b>.<b>ext</b>"
+<br>
+<br>
+<p><strong>GET</strong> params</p>
+<br>
+
+<p><strong>REQUIRED slug</strong> the fiddles slug</p>
+
+<p><strong>REQUIRED ext</strong> the files extension <strong>the available options are css,js,html,haml,md,scss,less,coffee</strong></p>
+
+<br>
+<p><strong>POST</strong> params</p>
+<br>
+
+<p><strong>code (optional)</strong> the contents of the file</p>
+<br>
+
+<div class="resp">
+<p>http://fiddlesapp.co/api/file/create/?slug=abcd145&ext=css<span class="file-create">Show Result</span></p>
+<div class="response file-create">
+
+<p><strong>code</strong>=p{color:red;}</p>
+
+<pre>
+<code>
+{
+  "code": 200,
+  "url": "http://fiddlesapp.co/abcd145.css"
+}
+</code>
+</pre>
+</div>
+<div>
+
+<h3>file/update/</h3>
+<p>Updates the code in a file of the format "<b>slug</b>.<b>ext</b>" of a fiddle already on the server</p>
+<br>
+
+<p><strong>GET</strong> params</p>
+<br>
+
+<p><strong>REQUIRED slug</strong> the fiddles slug</p>
+
+<p><strong>REQUIRED ext</strong> the files extension <strong>the available options are css,js,html,haml,md,scss,less,coffee</strong></p>
+
+<br>
+<p><strong>POST</strong> params</p>
+<br>
+<p><strong>code (optional)</strong> the contents of the file</p>
+<br>
+
+<div class="resp">
+<p>http://fiddlesapp.co/api/update/?slug=abcd145&ext=css<span class="file-update">Show Result</span></p>
+<div class="response file-update">
+
+<p><strong>code</strong>=p{color:red;}</p>
+
+<pre>
+<code>
+{
+  "code": 200,
+  "url": "http://fiddlesapp.co/abcd145.css"
+}
+</code>
+</pre>
+</div>
+<div>
+
+<br>
+
+<h3>validate_user/</h3>
+<p>Checks whether the given credentials are valid for the specified <strong>service</strong>.</p>
+<br>
+<p><strong>GET</strong> params</p>
+<br>
+<p><strong>REQUIRED service</strong> the service which the given credentials need to be validated for. The available options are: <strong>cloudapp</strong></p>
+<p><strong>REQUIRED email</strong> email address of the account on the given <strong>service</strong>.</p>
+<p><strong>REQUIRED pw</strong> the password of the account on the given <strong>service</strong>.</p>
+
+<br>
+
+<div class="resp">
+<p>http://fiddlesapp.co/api/validate_user/?service=cloudapp&email=ethankr@comcast.net&pw=bobbymar<span class="validate-user">Show Result</span></p>
+<div class="response validate-user">
+
+<pre>
+<code>
+{
+  "code": 200,
+  "msg": "correct credentials"
+}
+</code>
+</pre>
+</div>
+<div>
+
+<br>
+
+<script src="http://code.jquery.com/jquery-1.8.0.min.js" ></script>
+<script>
+
+	$('.resp .response').hide();
+
+	$('.translate').toggle(function(){
+		
+		$(this).text('Hide Result');
+		$('.resp .response.translate').slideDown();	
+			
+		
+	},function(){
+		
+		$(this).text("Show Result");
+		$('.resp .response.translate').slideUp();
+		
+	});
+	
+	$('.minify-css').toggle(function(){
+		
+		$(this).text('Hide Result');
+		$('.resp .response.minify-css').slideDown();		
+		
+	},function(){
+		
+		$(this).text("Show Result");
+		$('.resp .response.minify-css').slideUp();
+		
+	});
+	
+	$('.file-create').toggle(function(){
+		
+		$(this).text("Hide Result");
+		$('.resp .response.file-create').slideDown();		
+		
+	},function(){
+		
+		$(this).text("Show Result");
+		$('.resp .response.file-create').slideUp();
+		
+	});
+	
+	$('.file-update').toggle(function(){
+		
+		$(this).text("Hide Result");
+		$('.resp .response.file-update').slideDown();		
+		
+	},function(){
+		
+		$(this).text("Show Result");
+		$('.resp .response.file-update').slideUp();
+		
+	});
+	
+	$('.upload').toggle(function(){
+		
+		$(this).text("Hide Result");
+		$('.resp .response.upload').slideDown();		
+		
+	},function(){
+		
+		$(this).text("Show Result");
+		$('.resp .response.upload').slideUp();
+		
+	});
+	
+	$('.validate-user').toggle(function(){
+		
+		$(this).text("Hide Result");
+		$('.resp .response.validate-user').slideDown();		
+		
+	},function(){
+		
+		$(this).text("Show Result");
+		$('.resp .response.validate-user').slideUp();
+		
+	});
+
+</script>
+</body>
+
+</html>
