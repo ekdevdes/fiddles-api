@@ -4,5 +4,6 @@ header("Content-Type:application/json");
 
 echo @json_encode([
 	"documentation_url" => "http://api.fiddlesapp.co/docs/",
-	"err_msg" => "Not Found"
+	"err_msg" => "Not Found",
+  "request_root" => "http://api.fiddlesapp.co/"
 ]);
